@@ -1,10 +1,10 @@
 <?php
 
-$EM_CONF[$_EXTKEY] = [
+$EM_CONF['cart_saferpay'] = [
     'title' => 'Cart - Saferpay',
     'description' => 'Shopping Cart(s) for TYPO3 - Saferpay Payment Provider',
     'category' => 'services',
-    'author' => 'Daniel Lorenz',
+    'author' => 'Daniel Gohlke',
     'author_email' => 'ext.cart@extco.de',
     'author_company' => 'extco.de UG (haftungsbeschränkt)',
     'shy' => '',
@@ -17,12 +17,11 @@ $EM_CONF[$_EXTKEY] = [
     'modify_tables' => '',
     'clearCacheOnLoad' => 0,
     'lockType' => '',
-    'version' => '1.0.0',
+    'version' => '3.0.0',
     'constraints' => [
         'depends' => [
-            'typo3' => '8.7.0-8.7.99',
-            'php' => '7.0.0',
-            'cart' => '4.8.0',
+            'typo3' => '9.5.0-9.5.99',
+            'cart' => '6.3.0',
         ],
         'conflicts' => [],
         'suggests' => [],

@@ -1,14 +1,11 @@
-.. ==================================================
-.. FOR YOUR INFORMATION
-.. --------------------------------------------------
-.. -*- coding: utf-8 -*- with BOM.
+.. include:: ../Includes.txt
 
-Administratoren Handbuch
-========================
+Administrator Manual
+====================
 
 .. toctree::
-    :maxdepth: 5
-    :titlesonly:
+   :maxdepth: 5
+   :titlesonly:
 
-    Installation/Index
-    Configuration/Index
+   Installation/Index
+   Configuration/Index
