@@ -1,15 +1,10 @@
-.. ==================================================
-.. FOR YOUR INFORMATION
-.. --------------------------------------------------
-.. -*- coding: utf-8 -*- with BOM.
-
 .. include:: Includes.txt
 
 .. _start:
 
-=================
-EXT: CartSaferpay
-=================
+==================
+EXT: Cart Saferpay
+==================
 
 .. image:: Images/cart_saferpay_logo.png
    :height: 200
@@ -18,8 +13,11 @@ EXT: CartSaferpay
 
 .. only:: html
 
-    :Version:
-        |release|
+   :Classification:
+      cart
+
+   :Version:
+      |release|
 
    :Language:
       en
@@ -29,10 +27,10 @@ EXT: CartSaferpay
       Cart Saferpay is a payment provider.
 
    :Keywords:
-      cart, shopping, e-commerce, payment, saferpay
+      cart, shop, shopping, e-commerce, ecommerce, checkout, payment, saferpay
 
    :Autor:
-      Daniel Lorenz
+      Daniel Gohlke
 
    :E-Mail:
       ext.cart@extco.de
@@ -41,18 +39,18 @@ EXT: CartSaferpay
       This document is published under the Open Publication License
       available from http://www.opencontent.org/openpub/
 
-    :Rendered:
-        |today|
+   :Rendered:
+      |today|
 
-    The content of this document is related to TYPO3,
-    a GNU/GPL CMS/Framework available from `www.typo3.org <https://typo3.org/>`__.
+   The content of this document is related to TYPO3,
+   a GNU/GPL CMS/Framework available from `www.typo3.org <https://typo3.org/>`__.
 
-    **Table of Contents**
+   **Table of Contents**
 
 .. toctree::
-    :maxdepth: 5
-    :titlesonly:
+   :maxdepth: 5
+   :titlesonly:
 
-    Introduction/Index
-    AdministratorManual/Index
-    Misc/Index
+   Introduction/Index
+   AdministratorManual/Index
+   Changelog/Index

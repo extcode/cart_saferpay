@@ -1,10 +1,10 @@
-# CartSaferpay
+# Cart Saferpay
 
 [![Build Status](https://travis-ci.org/extcode/cart_saferpay.svg?branch=master)](https://travis-ci.org/extcode/cart_saferpay)
 [![StyleCi Badge](https://github.styleci.io/repos/75558815/shield?style=plastic?style=plastic)](https://github.styleci.io/repos/75558815shield)
 
 Cart is a small but powerful extension which "solely" adds a shopping cart to your TYPO3 installation.
-CartSaferpay is a payment provider.
+Cart Saferpay is a payment provider.
 
 ## 1. Features
 
@@ -26,6 +26,7 @@ Download and install the extension with the extension manager module.
 
 | Cart Saferpay | Cart       | TYPO3      | PHP       | Support/Development                     |
 | ------------- | ---------- | ---------- | ----------|---------------------------------------- |
+| 2.x.x         | 5.3.0      | 8.7        | 7.0 - 7.2 | Features, Bugfixes, Security Updates    |
 | 1.x.x         | 4.8.0      | 8.7        | 7.0 - 7.2 | Features _(in certain circumstances with feature toogle)_, Bugfixes, Security Updates    |
 
 ### 3.2. Changelog
