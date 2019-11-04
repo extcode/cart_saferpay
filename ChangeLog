@@ -1,5 +1,9 @@
+1.0.1
+    2019-11-04
+
+    * BUGFIX #4: Round total gross in payment amount
+
 1.0.0
     2018-08-18
-    Daniel Lorenz <daniel.lorenz@extco.de>
 
     * TASK #1: initial release

@@ -260,7 +260,7 @@ class OrderUtility
     {
         $this->paymentQuery['Payment'] = [
             'Amount' => [
-                'Value' => $this->orderItem->getTotalGross() * 100,
+                'Value' => round($this->orderItem->getTotalGross() * 100),
                 'CurrencyCode' => $this->orderItem->getCurrencyCode(),
             ],
             'OrderId' => $this->orderItem->getOrderNumber(),

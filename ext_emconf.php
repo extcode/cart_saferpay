@@ -1,6 +1,6 @@
 <?php
 
-$EM_CONF[$_EXTKEY] = [
+$EM_CONF['cart_saferpay'] = [
     'title' => 'Cart - Saferpay',
     'description' => 'Shopping Cart(s) for TYPO3 - Saferpay Payment Provider',
     'category' => 'services',
@@ -17,7 +17,7 @@ $EM_CONF[$_EXTKEY] = [
     'modify_tables' => '',
     'clearCacheOnLoad' => 0,
     'lockType' => '',
-    'version' => '1.0.0',
+    'version' => '1.0.1',
     'constraints' => [
         'depends' => [
             'typo3' => '8.7.0-8.7.99',
