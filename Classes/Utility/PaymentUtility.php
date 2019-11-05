@@ -121,7 +121,7 @@ class PaymentUtility
             header('Location: ' . $response['RedirectUrl']);
         }
 
-        return $params;
+        return [$params];
     }
 
     /**
