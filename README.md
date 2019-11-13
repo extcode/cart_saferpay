@@ -1,7 +1,7 @@
 # CartSaferpay
 
-[![Build Status](https://travis-ci.org/extcode/cart_saferpay.svg?branch=master)](https://travis-ci.org/extcode/cart_saferpay)
-[![StyleCi Badge](https://github.styleci.io/repos/75558815/shield?style=plastic?style=plastic)](https://github.styleci.io/repos/75558815shield)
+[![Build Status](https://travis-ci.org/extcode/cart_saferpay.svg?branch=1.x)](https://travis-ci.org/extcode/cart_saferpay)
+[![StyleCI](https://github.styleci.io/repos/75558815/shield?branch=1.x)](https://github.styleci.io/repos/75558815)
 
 Cart is a small but powerful extension which "solely" adds a shopping cart to your TYPO3 installation.
 CartSaferpay is a payment provider.
