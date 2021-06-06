@@ -1,24 +1,33 @@
 <?php
+declare(strict_types=1);
+namespace Extcode\CartSaferpay\EventListener\Order\Payment;
 
-namespace Extcode\CartSaferpay\Utility;
+/*
+ * This file is part of the package extcode/cart-saferpay.
+ *
+ * For the full copyright and license information, please read the
+ * LICENSE file that was distributed with this source code.
+ */
 
+use Extcode\Cart\Domain\Model\Cart;
+use Extcode\Cart\Domain\Model\Order\Item as OrderItem;
 use Extcode\Cart\Domain\Repository\CartRepository;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use Extcode\Cart\Domain\Repository\Order\PaymentRepository;
+use Extcode\Cart\Event\Order\PaymentEvent;
+use TYPO3\CMS\Core\TypoScript\TypoScriptService;
 use TYPO3\CMS\Extbase\Configuration\ConfigurationManager;
-use TYPO3\CMS\Extbase\Mvc\Web\Request;
 use TYPO3\CMS\Extbase\Mvc\Web\Routing\UriBuilder;
-use TYPO3\CMS\Extbase\Object\ObjectManager;
 use TYPO3\CMS\Extbase\Persistence\Generic\PersistenceManager;
 
-class PaymentUtility
+class ProviderRedirect
 {
     const PAYMENT_API_SANDBOX = 'https://test.saferpay.com/api/';
     const PAYMENT_API_LIVE = 'https://www.saferpay.com/api/';
 
     /**
-     * @var ObjectManager
+     * @var OrderItem
      */
-    protected $objectManager;
+    protected $orderItem;
 
     /**
      * @var PersistenceManager
@@ -31,14 +40,24 @@ class PaymentUtility
     protected $configurationManager;
 
     /**
-     * @var \Extcode\Cart\Domain\Model\Order\Item
+     * @var TypoScriptService
      */
-    protected $orderItem = null;
+    protected $typoScriptService;
 
     /**
-     * @var \Extcode\Cart\Domain\Model\Cart\Cart
+     * @var UriBuilder
      */
-    protected $cart = null;
+    protected $uriBuilder;
+
+    /**
+     * @var CartRepository
+     */
+    protected $cartRepository;
+
+    /**
+     * @var PaymentRepository
+     */
+    protected $paymentRepository;
 
     /**
      * @var array
@@ -51,77 +70,67 @@ class PaymentUtility
     protected $cartConf = [];
 
     /**
-     * Payment Query
-     *
      * @var array
      */
     protected $paymentQuery = [];
 
-    /**
-     * Intitialize
-     */
-    public function __construct()
-    {
-        $this->objectManager = GeneralUtility::makeInstance(
-            ObjectManager::class
-        );
-        $this->persistenceManager = $this->objectManager->get(
-            PersistenceManager::class
-        );
-        $this->configurationManager = $this->objectManager->get(
-            ConfigurationManager::class
-        );
+    public function __construct(
+        ConfigurationManager $configurationManager,
+        PersistenceManager $persistenceManager,
+        TypoScriptService $typoScriptService,
+        UriBuilder $uriBuilder,
+        CartRepository $cartRepository,
+        PaymentRepository $paymentRepository
+    ) {
+        $this->configurationManager = $configurationManager;
+        $this->persistenceManager = $persistenceManager;
+        $this->typoScriptService = $typoScriptService;
+        $this->uriBuilder = $uriBuilder;
+        $this->cartRepository = $cartRepository;
+        $this->paymentRepository = $paymentRepository;
 
         $this->conf = $this->configurationManager->getConfiguration(
-            \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK,
+            ConfigurationManager::CONFIGURATION_TYPE_FRAMEWORK,
             'CartSaferpay'
         );
 
         $this->cartConf = $this->configurationManager->getConfiguration(
-            \TYPO3\CMS\Extbase\Configuration\ConfigurationManagerInterface::CONFIGURATION_TYPE_FRAMEWORK,
+            ConfigurationManager::CONFIGURATION_TYPE_FRAMEWORK,
             'Cart'
         );
     }
 
-    /**
-     * @param array $params
-     *
-     * @return array
-     */
-    public function handlePayment(array $params): array
+    public function __invoke(PaymentEvent $event): void
     {
-        $this->orderItem = $params['orderItem'];
+        $this->orderItem = $event->getOrderItem();
 
-        if ($this->orderItem->getPayment()->getProvider() === 'SAFERPAY') {
-            $params['providerUsed'] = true;
+        $payment = $this->orderItem->getPayment();
+        $provider = $payment->getProvider();
 
-            $cart = $this->objectManager->get(
-                \Extcode\Cart\Domain\Model\Cart::class
-            );
-            $cart->setOrderItem($this->orderItem);
-            $cart->setCart($params['cart']);
-            $cart->setPid($this->cartConf['settings']['order']['pid']);
-
-            $cartRepository = $this->objectManager->get(
-                CartRepository::class
-            );
-            $cartRepository->add($cart);
-
-            $this->persistenceManager->persistAll();
-
-            $this->addPaymentQueryData();
-
-            $this->paymentQuery['ReturnUrls'] = [
-                'Success' => $this->buildReturnUrl('success', $cart->getSHash()),
-                'Fail' => $this->buildReturnUrl('cancel', $cart->getFHash()),
-            ];
-
-            $response = $this->doPostRequest();
-
-            header('Location: ' . $response['RedirectUrl']);
+        if ($provider !== 'SAFERPAY') {
+            return;
         }
 
-        return [$params];
+        $cart = new Cart();
+        $cart->setOrderItem($this->orderItem);
+        $cart->setCart($event->getCart());
+        $cart->setPid((int)$this->cartConf['settings']['order']['pid']);
+
+        $this->cartRepository->add($cart);
+        $this->persistenceManager->persistAll();
+
+        $this->addPaymentQueryData();
+
+        $this->paymentQuery['ReturnUrls'] = [
+            'Success' => $this->buildReturnUrl('success', $cart->getSHash()),
+            'Fail' => $this->buildReturnUrl('cancel', $cart->getFHash()),
+        ];
+
+        $response = $this->doPostRequest();
+
+        header('Location: ' . $response['RedirectUrl']);
+
+        $event->setPropagationStopped(true);
     }
 
     /**
@@ -223,14 +232,10 @@ class PaymentUtility
 
     /**
      * Builds a return URL to Cart order controller action
-     *
-     * @param string $action
-     * @param string $hash
-     * @return string
      */
     protected function buildReturnUrl(string $action, string $hash): string
     {
-        $pid = $this->cartConf['settings']['cart']['pid'];
+        $pid = (int)$this->cartConf['settings']['cart']['pid'];
 
         $arguments = [
             'tx_cartsaferpay_cart' => [
@@ -241,28 +246,13 @@ class PaymentUtility
             ]
         ];
 
-        $uriBuilder = $this->getUriBuilder();
+        $uriBuilder = $this->uriBuilder;
 
         return $uriBuilder->reset()
             ->setTargetPageUid($pid)
-            ->setTargetPageType($this->conf['redirectTypeNum'])
+            ->setTargetPageType((int)$this->conf['redirectTypeNum'])
             ->setCreateAbsoluteUri(true)
-            ->setUseCacheHash(false)
             ->setArguments($arguments)
             ->build();
-    }
-
-    /**
-     * @return UriBuilder
-     */
-    protected function getUriBuilder(): UriBuilder
-    {
-        $request = $this->objectManager->get(Request::class);
-        $request->setRequestURI(GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL'));
-        $request->setBaseURI(GeneralUtility::getIndpEnv('TYPO3_SITE_URL'));
-        $uriBuilder = $this->objectManager->get(UriBuilder::class);
-        $uriBuilder->setRequest($request);
-
-        return $uriBuilder;
     }
 }

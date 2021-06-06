@@ -5,23 +5,12 @@ defined('TYPO3_MODE') or die();
 // configure plugins
 
 \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-    'Extcode.cart_saferpay',
+    'CartSaferpay',
     'Cart',
     [
-        'Order\Payment' => 'success, cancel',
+        \Extcode\CartSaferpay\Controller\Order\PaymentController::class => 'success, cancel',
     ],
-    // non-cacheable actions
     [
-        'Order\Payment' => 'success, cancel',
+        \Extcode\CartSaferpay\Controller\Order\PaymentController::class => 'success, cancel',
     ]
-);
-
-// configure signal slots
-
-$dispatcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Extbase\SignalSlot\Dispatcher::class);
-$dispatcher->connect(
-    \Extcode\Cart\Utility\PaymentUtility::class,
-    'handlePayment',
-    \Extcode\CartSaferpay\Utility\PaymentUtility::class,
-    'handlePayment'
 );

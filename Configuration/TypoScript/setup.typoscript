@@ -18,17 +18,4 @@ plugin.tx_cartsaferpay {
     sandbox = 1
 
     redirectTypeNum = {$plugin.tx_cartsaferpay.redirectTypeNum}
-
-    finishers {
-        order {
-            success {
-                400 {
-                    class = Extcode\Cart\Domain\Finisher\Order\EmailFinisher
-                }
-                500 {
-                    class = Extcode\Cart\Domain\Finisher\Order\ClearCartFinisher
-                }
-            }
-        }
-    }
 }
