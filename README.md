@@ -1,7 +1,6 @@
 # Cart Saferpay
 
 [![Build Status](https://travis-ci.org/extcode/cart_saferpay.svg?branch=2.x)](https://travis-ci.org/extcode/cart_saferpay)
-[![StyleCI](https://github.styleci.io/repos/75558815/shield?branch=2.x)](https://github.styleci.io/repos/75558815)
 
 Cart is a small but powerful extension which "solely" adds a shopping cart to your TYPO3 installation.
 Cart Saferpay is a payment provider.
@@ -26,8 +25,10 @@ Download and install the extension with the extension manager module.
 
 | Cart Saferpay | Cart       | TYPO3      | PHP       | Support/Development                     |
 | ------------- | ---------- | ---------- | ----------|---------------------------------------- |
-| 2.x.x         | 5.3.0      | 8.7        | 7.0 - 7.2 | Features, Bugfixes, Security Updates    |
-| 1.x.x         | 4.8.0      | 8.7        | 7.0 - 7.2 | Features _(in certain circumstances with feature toogle)_, Bugfixes, Security Updates    |
+| 4.x.x         | 7.2.0      | 10.4       | 7.2 - 7.4 | Features, Bugfixes, Security Updates    |
+| 3.x.x         | 6.3.0      | 9.5        | 7.2 - 7.4 | Features, Bugfixes, Security Updates    |
+| 2.x.x         | 5.3.0      | 8.7        | 7.0 - 7.4 | Bugfixes, Security Updates              |
+| 1.x.x         | 4.8.0      | 8.7        | 7.0 - 7.2 | ---                                     |
 
 ### 3.2. Changelog
 
@@ -42,9 +43,10 @@ News uses **semantic versioning** which basically means for you, that
 
 ## 4. Sponsoring
 
-*  Ask for an invoice.
-*  [Patreon](https://patreon.com/ext_cart)
-*  [PayPal.Me](https://paypal.me/extcart)
+* Ask for an invoice.
+* [GitHub Sponsors](https://github.com/sponsors/extcode)
+* [PayPal.Me](https://paypal.me/extcart)
+* [Patreon](https://patreon.com/ext_cart)
 
 [1]: https://docs.typo3.org/typo3cms/extensions/cart_events/
 [2]: https://getcomposer.org/
